@@ -1,6 +1,6 @@
-const queries = require('./queries');
-const Errors = require('../../errors');
-const ClientEmail = require('../../email');
+const queries = require("./queries");
+const Errors = require("../../errors");
+const ClientEmail = require("../../email");
 
 class ClientModel {
   static async postClient(data, database, response) {
@@ -13,14 +13,21 @@ class ClientModel {
       data.direccion
     ];
 
+    console.log("dataToInsert", dataToInsert);
+
     try {
-      const insertClient = await database.query(queries.insertClient, dataToInsert);
+      const insertClient = await database.query(
+        queries.insertClient,
+        dataToInsert
+      );
 
-      if (insertClient.rows.length) {
-        ClientEmail.sendEmail({}, {});
-      }
+      // if (insertClient.rows.length) {
+      //   ClientEmail.sendEmail({}, {});
+      // }
 
-      return response.status(200).send({ insertion: true, data: insertClient.rows });
+      return response
+        .status(200)
+        .send({ insertion: true, data: insertClient.rows });
     } catch (err) {
       return response.status(500).send({ msg: Errors[500], meta: err });
     }
